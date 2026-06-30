@@ -1,0 +1,25 @@
+name: cybercrime_complaint_system
+description: >
+  Medium-fidelity desktop prototype for a Cybercrime Complaint Intake System.
+  Georgia Tech CS6750 Human-Computer Interaction Individual Project.
+
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^6.1.1
+  fl_chart: ^0.66.2
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true
