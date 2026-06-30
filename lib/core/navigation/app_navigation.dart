@@ -46,7 +46,13 @@ class PrimaryWorkspaceShell extends StatelessWidget {
     return Consumer<WorkspaceIndexNotifier>(
       builder: (context, workspace, _) {
         final panes = panesFor(workspace.mode);
-        final safeIndex = workspace.activePane.clamp(0, panes.length - 1);
+        final activeIndex = workspace.activePane;
+        assert(
+          activeIndex < panes.length,
+          'activePane $activeIndex out of range for mode ${workspace.mode} '
+          '(${panes.length} panes). Check WorkspaceIndexNotifier.jumpTo() call sites.',
+        );
+        final safeIndex = activeIndex.clamp(0, panes.length - 1);
         return Scaffold(
           body: Row(
             children: [

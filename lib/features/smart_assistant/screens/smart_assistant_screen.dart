@@ -142,7 +142,7 @@ class _SmartInterviewAssistantScreenState
     }
     if (idx == 3) {
       return [
-        'Emphasise the importance of preserving originals, not copies.',
+        'Emphasize the importance of preserving originals, not copies.',
         'Ask whether any accounts have been changed/deleted.',
       ];
     }
