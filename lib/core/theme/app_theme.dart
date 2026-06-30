@@ -8,27 +8,25 @@ class GovernmentDesignTokens {
   GovernmentDesignTokens._();
 
   static ThemeData get materialTheme {
-    const pal = InvestigatorPalette; // shorthand
-
     return ThemeData(
       useMaterial3: true,
 
-      colorScheme: ColorScheme.light(
-        primary: pal.badgeNavy,
-        secondary: pal.slateGray,
-        surface: pal.cardWhite,
-        error: pal.alertRed,
+      colorScheme: const ColorScheme.light(
+        primary: InvestigatorPalette.badgeNavy,
+        secondary: InvestigatorPalette.slateGray,
+        surface: InvestigatorPalette.cardWhite,
+        error: InvestigatorPalette.alertRed,
         onPrimary: Colors.white,
         onSecondary: Colors.white,
-        onSurface: pal.inkDark,
-        outline: pal.ruleLine,
+        onSurface: InvestigatorPalette.inkDark,
+        outline: InvestigatorPalette.ruleLine,
       ),
 
-      scaffoldBackgroundColor: pal.canvasWash,
+      scaffoldBackgroundColor: InvestigatorPalette.canvasWash,
 
       // ── Cards ────────────────────────────────────────────────────
       cardTheme: CardThemeData(
-        color: pal.cardWhite,
+        color: InvestigatorPalette.cardWhite,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
