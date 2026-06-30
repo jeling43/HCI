@@ -50,7 +50,7 @@ class GovernmentDesignTokens {
 
       // ── Side rail ────────────────────────────────────────────────
       navigationRailTheme: NavigationRailThemeData(
-        backgroundColor: pal.sidebarFill,
+        backgroundColor: InvestigatorPalette.sidebarFill,
         selectedIconTheme: const IconThemeData(color: InvestigatorPalette.sidebarActive, size: 24),
         unselectedIconTheme: const IconThemeData(color: InvestigatorPalette.sidebarDormant, size: 24),
         selectedLabelTextStyle: const TextStyle(color: InvestigatorPalette.sidebarActive, fontSize: 12, fontWeight: FontWeight.w600),
@@ -61,7 +61,7 @@ class GovernmentDesignTokens {
       // ── Filled buttons ───────────────────────────────────────────
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: pal.badgeNavy,
+          backgroundColor: InvestigatorPalette.badgeNavy,
           foregroundColor: Colors.white,
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
@@ -73,7 +73,7 @@ class GovernmentDesignTokens {
       // ── Outlined buttons ─────────────────────────────────────────
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: pal.badgeNavy,
+          foregroundColor: InvestigatorPalette.badgeNavy,
           side: const BorderSide(color: InvestigatorPalette.ruleLine),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -84,7 +84,7 @@ class GovernmentDesignTokens {
       // ── Text fields ──────────────────────────────────────────────
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: pal.cardWhite,
+        fillColor: InvestigatorPalette.cardWhite,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: InvestigatorPalette.ruleLine),
@@ -104,7 +104,7 @@ class GovernmentDesignTokens {
 
       // ── Chips ────────────────────────────────────────────────────
       chipTheme: ChipThemeData(
-        backgroundColor: pal.cardOffWhite,
+        backgroundColor: InvestigatorPalette.cardOffWhite,
         side: const BorderSide(color: InvestigatorPalette.ruleLine),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         labelStyle: const TextStyle(fontSize: 13, color: InvestigatorPalette.inkDark),
@@ -124,7 +124,7 @@ class GovernmentDesignTokens {
       dataTableTheme: DataTableThemeData(
         headingTextStyle: const TextStyle(fontWeight: FontWeight.w600, color: InvestigatorPalette.inkDark, fontSize: 13),
         dataTextStyle: const TextStyle(color: InvestigatorPalette.inkDark, fontSize: 13),
-        headingRowColor: WidgetStateProperty.all(pal.cardOffWhite),
+        headingRowColor: WidgetStateProperty.all(InvestigatorPalette.cardOffWhite),
         dividerThickness: 1,
       ),
 
