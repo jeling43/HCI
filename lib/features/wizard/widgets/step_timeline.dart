@@ -6,8 +6,9 @@ class ChronologyBuilder extends StatefulWidget {
   final List<Map<String, String>> rows;
   final void Function(Map<String, String> row) onAppend;
   final void Function(int idx) onDiscard;
+  final VoidCallback onGenerateTimeline;
 
-  const ChronologyBuilder({super.key, required this.rows, required this.onAppend, required this.onDiscard});
+  const ChronologyBuilder({super.key, required this.rows, required this.onAppend, required this.onDiscard, required this.onGenerateTimeline});
 
   @override
   State<ChronologyBuilder> createState() => _ChronologyBuilderState();
@@ -34,14 +35,39 @@ class _ChronologyBuilderState extends State<ChronologyBuilder> {
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const Text('Chronology Builder', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: InvestigatorPalette.inkDark)),
-      const SizedBox(height: 8),
-      const Text('Construct a timeline of events related to the incident.', style: TextStyle(fontSize: 14, color: InvestigatorPalette.inkMuted)),
+      Row(children: [
+        const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text('Timeline', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: InvestigatorPalette.inkDark)),
+          SizedBox(height: 8),
+          Text('Construct a timeline of events related to the incident.', style: TextStyle(fontSize: 14, color: InvestigatorPalette.inkMuted)),
+        ])),
+        ElevatedButton.icon(
+          onPressed: widget.onGenerateTimeline,
+          icon: const Icon(Icons.auto_fix_high, size: 18),
+          label: const Text('Generate Timeline'),
+          style: ElevatedButton.styleFrom(backgroundColor: InvestigatorPalette.evidenceBlue),
+        ),
+      ]),
+      const SizedBox(height: 24),
+
+      // entries
+      if (widget.rows.isNotEmpty) ...[
+        Text('${widget.rows.length} Events Recorded', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: InvestigatorPalette.inkDark)),
+        const SizedBox(height: 12),
+        ...widget.rows.asMap().entries.map((e) => _EventCard(seq: e.key, data: e.value, onDiscard: () => widget.onDiscard(e.key))),
+      ] else
+        Card(child: Padding(padding: const EdgeInsets.all(32), child: Center(child: Column(children: [
+          Icon(Icons.timeline, size: 40, color: InvestigatorPalette.inkFaint),
+          const SizedBox(height: 12),
+          const Text('No events recorded yet', style: TextStyle(fontSize: 14, color: InvestigatorPalette.inkMuted)),
+          const SizedBox(height: 4),
+          const Text('Click "Generate Timeline" to auto-create events, or add manually below', style: TextStyle(fontSize: 13, color: InvestigatorPalette.inkFaint)),
+        ])))),
       const SizedBox(height: 24),
 
       // input form
       Card(child: Padding(padding: const EdgeInsets.all(20), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const Text('Add Event', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: InvestigatorPalette.inkDark)),
+        const Text('Add Event Manually', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: InvestigatorPalette.inkDark)),
         const SizedBox(height: 16),
         Row(children: [
           Expanded(child: TextFormField(controller: _dateInput, decoration: const InputDecoration(labelText: 'Date', prefixIcon: Icon(Icons.calendar_today), hintText: 'MM/DD/YYYY'))),
@@ -61,21 +87,6 @@ class _ChronologyBuilderState extends State<ChronologyBuilder> {
           ElevatedButton.icon(onPressed: _commit, icon: const Icon(Icons.add, size: 18), label: const Text('Add')),
         ]),
       ]))),
-      const SizedBox(height: 24),
-
-      // entries
-      if (widget.rows.isNotEmpty) ...[
-        Text('${widget.rows.length} Events Recorded', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: InvestigatorPalette.inkDark)),
-        const SizedBox(height: 12),
-        ...widget.rows.asMap().entries.map((e) => _EventCard(seq: e.key, data: e.value, onDiscard: () => widget.onDiscard(e.key))),
-      ] else
-        Card(child: Padding(padding: const EdgeInsets.all(32), child: Center(child: Column(children: [
-          Icon(Icons.timeline, size: 40, color: InvestigatorPalette.inkFaint),
-          const SizedBox(height: 12),
-          const Text('No events recorded', style: TextStyle(fontSize: 14, color: InvestigatorPalette.inkMuted)),
-          const SizedBox(height: 4),
-          const Text('Use the form above to add chronological events', style: TextStyle(fontSize: 13, color: InvestigatorPalette.inkFaint)),
-        ])))),
     ]);
   }
 }
