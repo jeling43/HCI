@@ -5,6 +5,7 @@ enum OffenseCategory {
   onlineScam('Online Scam', 'Fraudulent schemes conducted through digital channels'),
   identityTheft('Identity Theft', 'Unauthorized acquisition or use of personal identifiers'),
   cryptoFraud('Cryptocurrency Fraud', 'Deceptive practices involving digital currencies'),
+  romanceScam('Romance Scam', 'Relationship-based fraud exploiting emotional trust'),
   socialMediaCrime('Social Media Crime', 'Criminal activity perpetrated via social platforms'),
   businessEmailCompromise('Business Email Compromise', 'Impersonation-based email fraud targeting organizations'),
   other('Other', 'Cybercrime categories not listed above');
@@ -57,6 +58,7 @@ class ComplaintDossier {
   final DateTime filedOn;
   final DateTime lastTouched;
   final double artifactCompleteness;
+  final String? statusNote;
   final List<ArtifactRecord> artifacts;
   final List<ChronologyEntry> chronology;
   final List<InvestigatorMemo> memos;
@@ -83,6 +85,7 @@ class ComplaintDossier {
     required this.filedOn,
     required this.lastTouched,
     required this.artifactCompleteness,
+    this.statusNote,
     required this.artifacts,
     required this.chronology,
     required this.memos,

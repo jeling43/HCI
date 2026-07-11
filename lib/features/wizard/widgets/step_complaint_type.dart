@@ -13,6 +13,7 @@ class OffenseSelector extends StatelessWidget {
     OffenseCategory.onlineScam: Icons.shopping_cart,
     OffenseCategory.identityTheft: Icons.fingerprint,
     OffenseCategory.cryptoFraud: Icons.currency_bitcoin,
+    OffenseCategory.romanceScam: Icons.favorite,
     OffenseCategory.socialMediaCrime: Icons.people,
     OffenseCategory.businessEmailCompromise: Icons.email,
     OffenseCategory.other: Icons.more_horiz,

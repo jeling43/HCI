@@ -9,17 +9,29 @@ class ComplainantForm extends StatelessWidget {
   final TextEditingController emailCtrl;
   final TextEditingController addressCtrl;
   final TextEditingController occupationCtrl;
+  final TextEditingController dobCtrl;
   final String contactMethod;
   final ValueChanged<String> onContactMethodChanged;
+  final VoidCallback onFillSampleData;
 
-  const ComplainantForm({super.key, required this.formKey, required this.nameCtrl, required this.phoneCtrl, required this.emailCtrl, required this.addressCtrl, required this.occupationCtrl, required this.contactMethod, required this.onContactMethodChanged});
+  const ComplainantForm({super.key, required this.formKey, required this.nameCtrl, required this.phoneCtrl, required this.emailCtrl, required this.addressCtrl, required this.occupationCtrl, required this.dobCtrl, required this.contactMethod, required this.onContactMethodChanged, required this.onFillSampleData});
 
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const Text('Complainant Information', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: InvestigatorPalette.inkDark)),
-      const SizedBox(height: 8),
-      const Text('Record the complainant\'s contact and personal details.', style: TextStyle(fontSize: 14, color: InvestigatorPalette.inkMuted)),
+      Row(children: [
+        const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text('Complainant Information', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: InvestigatorPalette.inkDark)),
+          SizedBox(height: 8),
+          Text('Record the complainant\'s contact and personal details.', style: TextStyle(fontSize: 14, color: InvestigatorPalette.inkMuted)),
+        ])),
+        ElevatedButton.icon(
+          onPressed: onFillSampleData,
+          icon: const Icon(Icons.auto_fix_high, size: 18),
+          label: const Text('Fill Sample Data'),
+          style: ElevatedButton.styleFrom(backgroundColor: InvestigatorPalette.evidenceBlue),
+        ),
+      ]),
       const SizedBox(height: 24),
       Form(
         key: formKey,
@@ -27,7 +39,7 @@ class ComplainantForm extends StatelessWidget {
           Row(children: [
             Expanded(child: TextFormField(controller: nameCtrl, decoration: const InputDecoration(labelText: 'Full Name *', prefixIcon: Icon(Icons.person_outline)))),
             const SizedBox(width: 16),
-            Expanded(child: TextFormField(controller: occupationCtrl, decoration: const InputDecoration(labelText: 'Occupation', prefixIcon: Icon(Icons.work_outline)))),
+            Expanded(child: TextFormField(controller: dobCtrl, decoration: const InputDecoration(labelText: 'Date of Birth', prefixIcon: Icon(Icons.cake_outlined), hintText: 'MM/DD/YYYY'))),
           ]),
           const SizedBox(height: 16),
           Row(children: [

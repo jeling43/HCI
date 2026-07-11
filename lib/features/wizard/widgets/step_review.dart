@@ -31,11 +31,30 @@ class IntakeSummary extends StatelessWidget {
     final totalArtifacts = artifactManifest.length;
     final pctArtifacts = totalArtifacts > 0 ? ((securedCount / totalArtifacts) * 100).toInt() : 0;
 
+    // section completion checks
+    final offenseComplete = offense != null;
+    final complainantComplete = complainantName.isNotEmpty && (complainantEmail.isNotEmpty || complainantPhone.isNotEmpty);
+    final incidentComplete = incidentDate.isNotEmpty && narrative.isNotEmpty;
+    final evidenceComplete = artifactManifest.values.any((v) => v);
+    final timelineComplete = chronologyRows.isNotEmpty;
+
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       const Text('Review & Submit', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: InvestigatorPalette.inkDark)),
       const SizedBox(height: 8),
-      const Text('Verify all information before filing the complaint.', style: TextStyle(fontSize: 14, color: InvestigatorPalette.inkMuted)),
+      const Text('Verify all information before submitting the complaint.', style: TextStyle(fontSize: 14, color: InvestigatorPalette.inkMuted)),
       const SizedBox(height: 24),
+
+      // section status checks
+      Card(child: Padding(padding: const EdgeInsets.all(20), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        const Text('Section Status', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: InvestigatorPalette.inkDark)),
+        const SizedBox(height: 12),
+        _StatusRow(label: 'Crime Type', complete: offenseComplete),
+        _StatusRow(label: 'Complainant Information', complete: complainantComplete),
+        _StatusRow(label: 'Incident Information', complete: incidentComplete),
+        _StatusRow(label: 'Evidence Collection', complete: evidenceComplete),
+        _StatusRow(label: 'Timeline', complete: timelineComplete),
+      ]))),
+      const SizedBox(height: 16),
 
       // gap warning
       if (gaps.isNotEmpty) ...[
@@ -46,7 +65,7 @@ class IntakeSummary extends StatelessWidget {
             const Icon(Icons.warning_amber_rounded, color: InvestigatorPalette.cautionAmber),
             const SizedBox(width: 12),
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const Text('Incomplete Fields', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: InvestigatorPalette.inkDark)),
+              const Text('Missing Information', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: InvestigatorPalette.inkDark)),
               const SizedBox(height: 4),
               Text('The following fields are blank: ${gaps.join(", ")}', style: const TextStyle(fontSize: 13, color: InvestigatorPalette.inkMuted)),
             ])),
@@ -55,26 +74,10 @@ class IntakeSummary extends StatelessWidget {
         const SizedBox(height: 16),
       ],
 
-      // completion gauge
-      Card(child: Padding(padding: const EdgeInsets.all(20), child: Row(children: [
-        Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Text('Intake Completeness', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: InvestigatorPalette.inkDark)),
-          const SizedBox(height: 8),
-          ClipRRect(borderRadius: BorderRadius.circular(4), child: LinearProgressIndicator(
-            value: _completeness(), backgroundColor: InvestigatorPalette.ruleLine,
-            valueColor: AlwaysStoppedAnimation<Color>(_completeness() >= 0.8 ? InvestigatorPalette.resolvedGreen : InvestigatorPalette.cautionAmber), minHeight: 8,
-          )),
-        ])),
-        const SizedBox(width: 16),
-        Text('${(_completeness() * 100).toInt()}%', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: InvestigatorPalette.inkDark)),
-      ]))),
-      const SizedBox(height: 16),
-
       // detail panels
       Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Expanded(child: _SummaryBlock(heading: 'Offense Classification', glyph: Icons.category, pairs: [
+        Expanded(child: _SummaryBlock(heading: 'Crime Type', glyph: Icons.category, pairs: [
           _KV('Category', offense?.label ?? 'Not selected'),
-          _KV('Urgency', urgencyLabel),
         ])),
         const SizedBox(width: 16),
         Expanded(child: _SummaryBlock(heading: 'Complainant', glyph: Icons.person, pairs: [
@@ -85,16 +88,16 @@ class IntakeSummary extends StatelessWidget {
       ]),
       const SizedBox(height: 16),
       Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Expanded(child: _SummaryBlock(heading: 'Incident Particulars', glyph: Icons.description, pairs: [
+        Expanded(child: _SummaryBlock(heading: 'Incident Details', glyph: Icons.description, pairs: [
           _KV('Date', incidentDate.isEmpty ? '—' : incidentDate),
           _KV('Platform', platform.isEmpty ? '—' : platform),
           _KV('Loss', monetaryImpact.isEmpty ? '—' : '\$$monetaryImpact'),
           _KV('Narrative', narrative.isEmpty ? '—' : (narrative.length > 80 ? '${narrative.substring(0, 80)}...' : narrative)),
         ])),
         const SizedBox(width: 16),
-        Expanded(child: _SummaryBlock(heading: 'Artifacts & Chronology', glyph: Icons.attachment, pairs: [
-          _KV('Artifacts Secured', '$securedCount of $totalArtifacts ($pctArtifacts%)'),
-          _KV('Chronology Events', '${chronologyRows.length}'),
+        Expanded(child: _SummaryBlock(heading: 'Evidence & Timeline', glyph: Icons.attachment, pairs: [
+          _KV('Evidence Secured', '$securedCount of $totalArtifacts ($pctArtifacts%)'),
+          _KV('Timeline Events', '${chronologyRows.length}'),
         ])),
       ]),
     ]);
@@ -109,6 +112,37 @@ class IntakeSummary extends StatelessWidget {
     if (narrative.isNotEmpty) filled++;
     if (artifactManifest.values.any((v) => v)) filled++;
     return filled / total;
+  }
+}
+
+class _StatusRow extends StatelessWidget {
+  final String label;
+  final bool complete;
+
+  const _StatusRow({required this.label, required this.complete});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(children: [
+        Icon(
+          complete ? Icons.check_circle : Icons.radio_button_unchecked,
+          size: 20,
+          color: complete ? InvestigatorPalette.resolvedGreen : InvestigatorPalette.inkFaint,
+        ),
+        const SizedBox(width: 12),
+        Text(label, style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+          color: complete ? InvestigatorPalette.inkDark : InvestigatorPalette.inkMuted,
+        )),
+        if (complete) ...[
+          const Spacer(),
+          const Text('Complete', style: TextStyle(fontSize: 12, color: InvestigatorPalette.resolvedGreen, fontWeight: FontWeight.w500)),
+        ],
+      ]),
+    );
   }
 }
 
