@@ -10,8 +10,8 @@ class SyntheticRecords {
 
   /// Generates the next sequential case number in the format 25-000XXX.
   static String mintCaseNumber() {
-    final num = _nextCaseSeq++;
-    return '25-${num.toString().padLeft(6, '0')}';
+    final seq = _nextCaseSeq++;
+    return '25-${seq.toString().padLeft(6, '0')}';
   }
 
   // ═══════════════════════════════════════════════════════════════

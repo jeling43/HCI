@@ -145,7 +145,7 @@ class _ComplaintIntakeWizardState extends State<ComplaintIntakeWizard> {
     setState(() {
       _chronRows.clear();
       _chronRows.addAll([
-        {'date': '06/14/2026', 'time': '10:30', 'summary': 'Victim contacted by suspect via messaging platform', 'tag': 'Initial Contact'},
+        {'date': '06/14/2026', 'time': '10:30', 'summary': 'Complainant contacted by suspect via messaging platform', 'tag': 'Initial Contact'},
         {'date': '06/18/2026', 'time': '14:00', 'summary': 'Money transferred to suspect-controlled account', 'tag': 'Financial'},
         {'date': '06/24/2026', 'time': '09:15', 'summary': 'Communication stopped — suspect became unreachable', 'tag': 'Discovery'},
         {'date': '06/28/2026', 'time': '11:00', 'summary': 'Complaint filed with law enforcement', 'tag': 'Response'},
