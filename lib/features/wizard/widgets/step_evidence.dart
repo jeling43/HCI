@@ -11,6 +11,18 @@ class ArtifactChecklist extends StatelessWidget {
   const ArtifactChecklist({super.key, required this.manifest, required this.onToggle, this.offense});
 
   static const _glyphs = {
+    'Screenshots of conversations': Icons.screenshot,
+    'Email messages': Icons.email,
+    'Transaction receipts': Icons.receipt,
+    'Bank records': Icons.account_balance,
+    'Cryptocurrency wallet address': Icons.account_balance_wallet,
+    'Transaction hash or ID': Icons.tag,
+    'Profile or account information': Icons.badge,
+    'Phone numbers': Icons.phone,
+    'Website URLs': Icons.link,
+    'Credit Reports': Icons.credit_score,
+    'Identity Documents': Icons.badge,
+    'Fraud Alerts': Icons.notification_important,
     'Screenshots': Icons.screenshot,
     'Emails': Icons.email,
     'Phone Records': Icons.phone,
@@ -18,18 +30,6 @@ class ArtifactChecklist extends StatelessWidget {
     'Receipts': Icons.receipt,
     'Chat Logs': Icons.chat,
     'Wallet Addresses': Icons.account_balance_wallet,
-    'Wallet Address': Icons.account_balance_wallet,
-    'Wire Receipt': Icons.receipt_long,
-    'Coinbase Transaction ID': Icons.tag,
-    'Credit Reports': Icons.credit_score,
-    'Identity Documents': Icons.badge,
-    'Fraud Alerts': Icons.notification_important,
-    'Dating App Messages': Icons.favorite,
-    'Gift Card Receipts': Icons.card_giftcard,
-    'Video Call Recordings': Icons.videocam,
-    'Spoofed Email Headers': Icons.alternate_email,
-    'Wire Transfer Docs': Icons.send,
-    'Server Logs': Icons.dns,
   };
 
   @override
@@ -63,12 +63,27 @@ class ArtifactChecklist extends StatelessWidget {
 
       // checkboxes
       Card(child: Padding(padding: const EdgeInsets.all(8), child: Column(
-        children: manifest.entries.map((e) => CheckboxListTile(
-          value: e.value, onChanged: (v) => onToggle(e.key, v ?? false),
-          title: Text(e.key, style: TextStyle(fontSize: 14, color: InvestigatorPalette.inkDark, decoration: e.value ? TextDecoration.lineThrough : null)),
-          secondary: Icon(_glyphs[e.key] ?? Icons.attachment, color: e.value ? InvestigatorPalette.resolvedGreen : InvestigatorPalette.inkFaint),
-          activeColor: InvestigatorPalette.resolvedGreen,
-          controlAffinity: ListTileControlAffinity.leading, dense: true,
+        children: manifest.entries.map((e) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 2),
+          child: Row(children: [
+            Checkbox(
+              value: e.value,
+              onChanged: (v) => onToggle(e.key, v ?? false),
+              activeColor: InvestigatorPalette.resolvedGreen,
+            ),
+            Icon(_glyphs[e.key] ?? Icons.attachment, color: e.value ? InvestigatorPalette.resolvedGreen : InvestigatorPalette.inkFaint, size: 20),
+            const SizedBox(width: 12),
+            Expanded(child: Text(e.key, style: TextStyle(fontSize: 14, color: InvestigatorPalette.inkDark, decoration: e.value ? TextDecoration.lineThrough : null))),
+            SizedBox(
+              height: 30,
+              child: OutlinedButton.icon(
+                onPressed: () => onToggle(e.key, true),
+                icon: const Icon(Icons.upload_file, size: 14),
+                label: const Text('Upload', style: TextStyle(fontSize: 11)),
+                style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 8)),
+              ),
+            ),
+          ]),
         )).toList(),
       ))),
     ]);
@@ -78,19 +93,17 @@ class ArtifactChecklist extends StatelessWidget {
   static Map<String, bool> evidenceForOffense(OffenseCategory? offense) {
     switch (offense) {
       case OffenseCategory.cryptoFraud:
-        return {'Wallet Address': false, 'Wire Receipt': false, 'Coinbase Transaction ID': false, 'Screenshots': false};
+        return {'Screenshots of conversations': false, 'Email messages': false, 'Transaction receipts': false, 'Bank records': false, 'Cryptocurrency wallet address': false, 'Transaction hash or ID': false, 'Profile or account information': false, 'Phone numbers': false, 'Website URLs': false};
       case OffenseCategory.identityTheft:
-        return {'Credit Reports': false, 'Identity Documents': false, 'Fraud Alerts': false, 'Bank Statements': false, 'Screenshots': false};
-      case OffenseCategory.onlineScam:
-        return {'Screenshots': false, 'Emails': false, 'Receipts': false, 'Chat Logs': false, 'Bank Statements': false};
+        return {'Credit Reports': false, 'Identity Documents': false, 'Fraud Alerts': false, 'Bank records': false, 'Screenshots of conversations': false, 'Email messages': false};
       case OffenseCategory.romanceScam:
-        return {'Dating App Messages': false, 'Screenshots': false, 'Gift Card Receipts': false, 'Wire Receipt': false, 'Video Call Recordings': false};
-      case OffenseCategory.businessEmailCompromise:
-        return {'Spoofed Email Headers': false, 'Wire Transfer Docs': false, 'Server Logs': false, 'Screenshots': false};
-      case OffenseCategory.socialMediaCrime:
-        return {'Screenshots': false, 'Chat Logs': false, 'Phone Records': false, 'Emails': false};
+        return {'Screenshots of conversations': false, 'Email messages': false, 'Transaction receipts': false, 'Bank records': false, 'Cryptocurrency wallet address': false, 'Transaction hash or ID': false, 'Profile or account information': false, 'Phone numbers': false, 'Website URLs': false};
+      case OffenseCategory.wireFraud:
+        return {'Transaction receipts': false, 'Bank records': false, 'Email messages': false, 'Screenshots of conversations': false, 'Phone numbers': false, 'Website URLs': false};
+      case OffenseCategory.accountTakeover:
+        return {'Screenshots of conversations': false, 'Email messages': false, 'Profile or account information': false, 'Phone numbers': false, 'Website URLs': false, 'Bank records': false};
       default:
-        return {'Screenshots': false, 'Emails': false, 'Phone Records': false, 'Bank Statements': false, 'Receipts': false, 'Chat Logs': false, 'Wallet Addresses': false};
+        return {'Screenshots of conversations': false, 'Email messages': false, 'Transaction receipts': false, 'Bank records': false, 'Profile or account information': false, 'Phone numbers': false, 'Website URLs': false};
     }
   }
 }

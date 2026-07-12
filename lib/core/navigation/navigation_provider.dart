@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 /// alternatives or the final combined prototype.
 enum PrototypeMode {
   p1Wizard,
-  p2Dashboard,
+  p2SinglePage,
   p3SmartAssist,
   finalCombined,
 }
@@ -16,7 +16,7 @@ extension PrototypeModeDisplay on PrototypeMode {
   String get shortLabel {
     switch (this) {
       case PrototypeMode.p1Wizard:      return 'P1';
-      case PrototypeMode.p2Dashboard:   return 'P2';
+      case PrototypeMode.p2SinglePage:  return 'P2';
       case PrototypeMode.p3SmartAssist: return 'P3';
       case PrototypeMode.finalCombined: return 'FINAL';
     }
@@ -26,9 +26,9 @@ extension PrototypeModeDisplay on PrototypeMode {
   String get fullLabel {
     switch (this) {
       case PrototypeMode.p1Wizard:      return 'Guided Intake Wizard';
-      case PrototypeMode.p2Dashboard:   return 'Investigator Dashboard';
+      case PrototypeMode.p2SinglePage:  return 'Single-Page Digital Intake Form';
       case PrototypeMode.p3SmartAssist: return 'Smart Interview Assistant';
-      case PrototypeMode.finalCombined: return 'Final Combined Prototype';
+      case PrototypeMode.finalCombined: return 'Final Medium-Fidelity Prototype';
     }
   }
 
@@ -36,7 +36,7 @@ extension PrototypeModeDisplay on PrototypeMode {
   Color get accentColor {
     switch (this) {
       case PrototypeMode.p1Wizard:      return const Color(0xFF2563EB);
-      case PrototypeMode.p2Dashboard:   return const Color(0xFF16A34A);
+      case PrototypeMode.p2SinglePage:  return const Color(0xFF16A34A);
       case PrototypeMode.p3SmartAssist: return const Color(0xFF7C3AED);
       case PrototypeMode.finalCombined: return const Color(0xFF1B3A5C);
     }
@@ -46,7 +46,7 @@ extension PrototypeModeDisplay on PrototypeMode {
   int get initialPane {
     switch (this) {
       case PrototypeMode.p1Wizard:      return 1; // New Complaint / wizard
-      case PrototypeMode.p2Dashboard:   return 0; // Dashboard / case management
+      case PrototypeMode.p2SinglePage:  return 0; // Single-page form
       case PrototypeMode.p3SmartAssist: return 7; // Smart Interview Assistant
       case PrototypeMode.finalCombined: return 0; // Dashboard
     }

@@ -10,12 +10,11 @@ class OffenseSelector extends StatelessWidget {
   const OffenseSelector({super.key, required this.chosen, required this.onChosen});
 
   static const _glyphs = {
-    OffenseCategory.onlineScam: Icons.shopping_cart,
     OffenseCategory.identityTheft: Icons.fingerprint,
-    OffenseCategory.cryptoFraud: Icons.currency_bitcoin,
     OffenseCategory.romanceScam: Icons.favorite,
-    OffenseCategory.socialMediaCrime: Icons.people,
-    OffenseCategory.businessEmailCompromise: Icons.email,
+    OffenseCategory.wireFraud: Icons.send,
+    OffenseCategory.cryptoFraud: Icons.currency_bitcoin,
+    OffenseCategory.accountTakeover: Icons.lock_open,
     OffenseCategory.other: Icons.more_horiz,
   };
 
