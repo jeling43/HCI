@@ -138,7 +138,7 @@ class _ComplaintIntakeWizardState extends State<ComplaintIntakeWizard> {
     setState(() {
       _iDate.text = '06/28/2026';
       _iPlatform.text = 'WhatsApp';
-      _iNarrative.text = 'I sent money to someone I met online after they claimed they needed help with an emergency. After building rapport over two weeks, the suspect persuaded the complainant to transfer funds to a digital wallet for "guaranteed returns." The platform showed fabricated gains before blocking all withdrawal attempts.';
+      _iNarrative.text = 'I sent money to someone I met online after they claimed they needed help with an emergency. After building rapport over two weeks, they persuaded me to transfer funds to a digital wallet for "guaranteed returns." The platform showed fabricated gains before blocking all withdrawal attempts.';
       _iLoss.text = '15,000';
       _iSuspect.text = 'Alex Morgan (alias), WhatsApp: +1-555-012-3456';
       _iUrl.text = 'cryptoinvest-pro.com';
