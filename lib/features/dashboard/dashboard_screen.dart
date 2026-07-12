@@ -85,7 +85,7 @@ class _InvestigatorDashboardState extends State<InvestigatorDashboard> {
                         TableRow(
                           decoration: BoxDecoration(color: InvestigatorPalette.cardOffWhite),
                           children: const [
-                            _TableHeader('Case #'),
+                            _TableHeader('Complaint #'),
                             _TableHeader('Complainant'),
                             _TableHeader('Crime Type'),
                             _TableHeader('Date'),
