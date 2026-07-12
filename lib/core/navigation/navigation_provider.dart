@@ -94,7 +94,7 @@ class WorkspaceIndexNotifier extends ChangeNotifier {
 
   /// Returns the rail item list appropriate for [mode].
   static List<SideRailDestination> railItemsFor(PrototypeMode mode) {
-    if (mode == PrototypeMode.p3SmartAssist || mode == PrototypeMode.finalCombined) {
+    if (mode == PrototypeMode.p3SmartAssist) {
       return [..._baseRailItems, _smartAssistItem];
     }
     return _baseRailItems;

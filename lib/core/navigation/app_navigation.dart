@@ -24,7 +24,7 @@ class PrimaryWorkspaceShell extends StatelessWidget {
 
   /// Pane index → widget mapping.  Indices 0–6 are stable across all
   /// modes; index 7 (Smart Interview Assistant) is only reachable in
-  /// p3SmartAssist and finalCombined modes.
+  /// p3SmartAssist mode.
   static List<Widget> panesFor(PrototypeMode mode) {
     if (mode == PrototypeMode.p2SinglePage) {
       return <Widget>[
@@ -40,8 +40,7 @@ class PrimaryWorkspaceShell extends StatelessWidget {
       const AnalyticsOverview(),          // 5
       const PreferencesPanel(),           // 6
     ];
-    if (mode == PrototypeMode.p3SmartAssist ||
-        mode == PrototypeMode.finalCombined) {
+    if (mode == PrototypeMode.p3SmartAssist) {
       base.add(const SmartInterviewAssistantScreen()); // 7
     }
     return base;
