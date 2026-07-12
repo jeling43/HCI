@@ -17,7 +17,7 @@ void main() {
 /// Named routes:
 ///   /        → PrototypeSelectorScreen (landing page)
 ///   /p1      → Prototype 1 · Guided Intake Wizard
-///   /p2      → Prototype 2 · Investigator Dashboard
+///   /p2      → Prototype 2 · Single-Page Digital Intake Form
 ///   /p3      → Prototype 3 · Smart Interview Assistant
 ///   /final   → Final Combined Prototype
 class CCISPrototypeRoot extends StatelessWidget {
@@ -46,7 +46,7 @@ class CCISPrototypeRoot extends StatelessWidget {
             return MaterialPageRoute(
               settings: settings,
               builder: (_) => ChangeNotifierProvider(
-                create: (_) => WorkspaceIndexNotifier(mode: PrototypeMode.p2Dashboard),
+                create: (_) => WorkspaceIndexNotifier(mode: PrototypeMode.p2SinglePage),
                 child: const PrimaryWorkspaceShell(),
               ),
             );

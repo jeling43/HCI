@@ -10,6 +10,7 @@ import '../../features/timeline/screens/timeline_screen.dart';
 import '../../features/reports/screens/reports_screen.dart';
 import '../../features/settings/screens/settings_screen.dart';
 import '../../features/smart_assistant/screens/smart_assistant_screen.dart';
+import '../../features/single_page_form/screens/single_page_form_screen.dart';
 
 /// The outermost shell: a permanent side rail on the left and a
 /// content pane on the right that swaps based on the active workspace.
@@ -25,6 +26,11 @@ class PrimaryWorkspaceShell extends StatelessWidget {
   /// modes; index 7 (Smart Interview Assistant) is only reachable in
   /// p3SmartAssist and finalCombined modes.
   static List<Widget> panesFor(PrototypeMode mode) {
+    if (mode == PrototypeMode.p2SinglePage) {
+      return <Widget>[
+        const SinglePageFormScreen(), // 0 – only pane for P2
+      ];
+    }
     final base = <Widget>[
       const InvestigatorDashboard(),       // 0
       const ComplaintIntakeWizard(),       // 1
@@ -47,12 +53,21 @@ class PrimaryWorkspaceShell extends StatelessWidget {
       builder: (context, workspace, _) {
         final panes = panesFor(workspace.mode);
         final activeIndex = workspace.activePane;
-        assert(
-          activeIndex < panes.length,
-          'activePane $activeIndex out of range for mode ${workspace.mode} '
-          '(${panes.length} panes). Check WorkspaceIndexNotifier.jumpTo() call sites.',
-        );
         final safeIndex = activeIndex.clamp(0, panes.length - 1);
+
+        // P2 Single-Page Form: no side rail, full-width content
+        if (workspace.mode == PrototypeMode.p2SinglePage) {
+          return Scaffold(
+            body: Row(
+              children: [
+                _MinimalSideRail(workspace: workspace),
+                const VerticalDivider(thickness: 1, width: 1, color: InvestigatorPalette.ruleLine),
+                Expanded(child: panes[safeIndex]),
+              ],
+            ),
+          );
+        }
+
         return Scaffold(
           body: Row(
             children: [
@@ -260,6 +275,48 @@ class _BackToSelectorButtonState extends State<_BackToSelectorButton> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Minimal side rail for P2 (Single-Page Form) – only shows logo and back button.
+class _MinimalSideRail extends StatelessWidget {
+  final WorkspaceIndexNotifier workspace;
+  const _MinimalSideRail({required this.workspace});
+
+  @override
+  Widget build(BuildContext context) {
+    final accent = workspace.mode.accentColor;
+    return Container(
+      width: 80,
+      color: InvestigatorPalette.sidebarFill,
+      child: Column(
+        children: [
+          const SizedBox(height: 16),
+          Container(
+            width: 48, height: 48,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(Icons.shield_outlined, color: Colors.white, size: 28),
+          ),
+          const SizedBox(height: 6),
+          const Text('CCIS', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1.5)),
+          const SizedBox(height: 6),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+            decoration: BoxDecoration(color: accent, borderRadius: BorderRadius.circular(10)),
+            child: Text(workspace.mode.shortLabel, style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w800, letterSpacing: 0.5)),
+          ),
+          const SizedBox(height: 16),
+          const Divider(color: Colors.white24, indent: 16, endIndent: 16),
+          const Spacer(),
+          const Divider(color: Colors.white24, indent: 16, endIndent: 16),
+          _BackToSelectorButton(),
+          const SizedBox(height: 16),
+        ],
       ),
     );
   }

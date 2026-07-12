@@ -85,6 +85,9 @@ class _ComplaintIntakeWizardState extends State<ComplaintIntakeWizard> {
 
   void _file() {
     final caseNum = SyntheticRecords.mintCaseNumber();
+    final securedCount = _artifacts.values.where((v) => v).length;
+    final totalArtifacts = _artifacts.length;
+    final completeness = totalArtifacts > 0 ? securedCount / totalArtifacts : 0.0;
     // Add the new case to the mock data registry
     SyntheticRecords.dossiers.add(ComplaintDossier(
       uid: 'wizard-${DateTime.now().millisecondsSinceEpoch}',
@@ -102,13 +105,13 @@ class _ComplaintIntakeWizardState extends State<ComplaintIntakeWizard> {
       digitalPlatform: _iPlatform.text,
       relatedUrl: _iUrl.text,
       narrative: _iNarrative.text,
-      monetaryImpact: double.tryParse(_iLoss.text) ?? 0,
+      monetaryImpact: double.tryParse(_iLoss.text.replaceAll(',', '')) ?? 0,
       suspectDetails: _iSuspect.text.isNotEmpty ? _iSuspect.text : null,
       assignedInvestigator: 'Det. John Doe',
       filedOn: DateTime.now(),
       lastTouched: DateTime.now(),
-      artifactCompleteness: 0.0,
-      statusNote: 'Awaiting Detective Review',
+      artifactCompleteness: completeness,
+      statusNote: 'Intake Complete',
       artifacts: const [],
       chronology: const [],
       memos: const [],
@@ -135,9 +138,10 @@ class _ComplaintIntakeWizardState extends State<ComplaintIntakeWizard> {
     setState(() {
       _iDate.text = '06/28/2026';
       _iPlatform.text = 'WhatsApp';
-      _iNarrative.text = 'Complainant was contacted through WhatsApp by an individual claiming to represent a cryptocurrency investment firm. After building rapport over two weeks, the suspect persuaded the complainant to transfer funds to a digital wallet for "guaranteed returns." The platform showed fabricated gains before blocking all withdrawal attempts.';
+      _iNarrative.text = 'I sent money to someone I met online after they claimed they needed help with an emergency. After building rapport over two weeks, they persuaded me to transfer funds to a digital wallet for "guaranteed returns." The platform showed fabricated gains before blocking all withdrawal attempts.';
       _iLoss.text = '15,000';
-      _iSuspect.text = 'John Smith (alias), WhatsApp: +1-555-012-3456';
+      _iSuspect.text = 'Alex Morgan (alias), WhatsApp: +1-555-012-3456';
+      _iUrl.text = 'cryptoinvest-pro.com';
     });
   }
 
@@ -208,16 +212,33 @@ class _ComplaintIntakeWizardState extends State<ComplaintIntakeWizard> {
   }
 
   Widget _filedConfirmation() {
+    final securedCount = _artifacts.values.where((v) => v).length;
+    final totalArtifacts = _artifacts.length;
+
     return Center(child: Card(child: Padding(padding: const EdgeInsets.all(48), child: Column(mainAxisSize: MainAxisSize.min, children: [
       Container(padding: const EdgeInsets.all(20), decoration: BoxDecoration(color: InvestigatorPalette.resolvedGreen.withOpacity(0.1), shape: BoxShape.circle), child: const Icon(Icons.check_circle, size: 64, color: InvestigatorPalette.resolvedGreen)),
       const SizedBox(height: 24),
-      const Text('Complaint Successfully Created', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: InvestigatorPalette.inkDark)),
-      const SizedBox(height: 12),
+      const Text('Complaint Successfully Submitted', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: InvestigatorPalette.inkDark)),
+      const SizedBox(height: 16),
       const Text('Case Number', style: TextStyle(fontSize: 14, color: InvestigatorPalette.inkMuted)),
       const SizedBox(height: 4),
       Text(_filedCaseNumber, style: const TextStyle(fontSize: 28, color: InvestigatorPalette.evidenceBlue, fontWeight: FontWeight.w700)),
-      const SizedBox(height: 8),
-      const Text('The complaint has been recorded and assigned for review.', style: TextStyle(fontSize: 14, color: InvestigatorPalette.inkMuted)),
+      const SizedBox(height: 20),
+      // Details
+      Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: InvestigatorPalette.cardOffWhite,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: InvestigatorPalette.ruleLine),
+        ),
+        child: Column(children: [
+          _confirmRow('Complainant', _cName.text.isNotEmpty ? _cName.text : 'Unknown'),
+          _confirmRow('Crime Type', _chosenOffense?.label ?? 'Not specified'),
+          _confirmRow('Submission Date', _formatDate(DateTime.now())),
+          _confirmRow('Evidence Collected', '$securedCount of $totalArtifacts items'),
+        ]),
+      ),
       const SizedBox(height: 32),
       ElevatedButton.icon(
         onPressed: _returnToDashboard,
@@ -225,5 +246,19 @@ class _ComplaintIntakeWizardState extends State<ComplaintIntakeWizard> {
         label: const Text('Return to Dashboard'),
       ),
     ]))));
+  }
+
+  Widget _confirmRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(children: [
+        SizedBox(width: 140, child: Text(label, style: const TextStyle(fontSize: 14, color: InvestigatorPalette.inkMuted))),
+        Expanded(child: Text(value, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: InvestigatorPalette.inkDark))),
+      ]),
+    );
+  }
+
+  String _formatDate(DateTime dt) {
+    return '${dt.month.toString().padLeft(2, '0')}/${dt.day.toString().padLeft(2, '0')}/${dt.year}';
   }
 }

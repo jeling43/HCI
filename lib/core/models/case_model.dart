@@ -2,13 +2,12 @@
 /// Every type uses a distinctive name tied to the law-enforcement domain.
 
 enum OffenseCategory {
-  onlineScam('Online Scam', 'Fraudulent schemes conducted through digital channels'),
   identityTheft('Identity Theft', 'Unauthorized acquisition or use of personal identifiers'),
-  cryptoFraud('Cryptocurrency Fraud', 'Deceptive practices involving digital currencies'),
   romanceScam('Romance Scam', 'Relationship-based fraud exploiting emotional trust'),
-  socialMediaCrime('Social Media Crime', 'Criminal activity perpetrated via social platforms'),
-  businessEmailCompromise('Business Email Compromise', 'Impersonation-based email fraud targeting organizations'),
-  other('Other', 'Cybercrime categories not listed above');
+  wireFraud('Wire Fraud', 'Fraudulent schemes involving electronic fund transfers'),
+  cryptoFraud('Cryptocurrency Fraud', 'Deceptive practices involving digital currencies'),
+  accountTakeover('Account Takeover', 'Unauthorized access to and control of online accounts'),
+  other('Other Cybercrime', 'Cybercrime categories not listed above');
 
   const OffenseCategory(this.label, this.briefing);
   final String label;

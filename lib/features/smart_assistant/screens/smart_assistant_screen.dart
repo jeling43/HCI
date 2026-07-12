@@ -67,7 +67,7 @@ class _SmartInterviewAssistantScreenState
       ),
       _InterviewQuestion(
         phase: 'Evidence',
-        text: offense == OffenseCategory.businessEmailCompromise
+        text: offense == OffenseCategory.wireFraud
             ? 'Have you preserved the original email headers from the suspicious message?'
             : 'Which digital evidence have you already preserved (screenshots, logs, receipts)?',
         hint: 'Flag any evidence that may require urgent preservation before it is deleted.',
